@@ -64,6 +64,7 @@ const RegisterationForm = () => {
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [event, setEvent] = useState("KYORUGI");
+  const [aadhar, setAadhar] = useState("");
 
   const handleFirstNameChange = (event) => {
     const value = event.target.value;
@@ -144,12 +145,13 @@ const RegisterationForm = () => {
         student_name: `${firstName} ${lastName}`,
         gender: gender,
         dob: dob,
+        aadhar: aadhar,
         // weight: weight,
         // height: height,
         coach_name: coachName,
         current_belt: belt,
-        tfi_id_no: tfiId,
-        wtf_cr_no: wtfCr,
+        tfi_id_no: tfiId || "N/A",
+        wtf_cr_no: wtfCr || "N/A",
       };
       if (jsonData.event === "KYORUGI") {
         jsonData.weight = weight;
@@ -171,9 +173,9 @@ const RegisterationForm = () => {
             <div className="absolute inset-0">
               <img
                 alt="Register"
-                src={
-                  "https://images.unsplash.com/photo-1530560643359-6d2fead989b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGFla3dvbmRvfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60"
-                }
+                src={require("../banner.jpeg")}
+                width={"50%"}
+                height={"50%"}
                 className="h-full w-full object-cover opacity-80"
               />
             </div>
@@ -230,7 +232,30 @@ const RegisterationForm = () => {
                     ))}
                   </select>
                 </div>
-                <br />
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="poomsaeType"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Event
+                  </label>
+
+                  <select
+                    required
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    name="poomsaeType"
+                    id="poomsaeType"
+                    onChange={(e) => {
+                      setEvent(e.target.value);
+                    }}
+                  >
+                    {events.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
@@ -296,13 +321,27 @@ const RegisterationForm = () => {
                     name="dateOfBirth"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                     onChange={(e) => {
-                      const date = new Date(e.target.value)
-                        .toJSON()
-                        .slice(0, 10)
-                        .split("-")
-                        .reverse()
-                        .join("/");
+                      const date = new Date(e.target.value);
                       setDOB(date);
+                    }}
+                  />
+                </div>
+
+                <div className="col-span-6">
+                  <label
+                    htmlFor="dateOfBirth"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Aadhar number
+                  </label>
+
+                  <input
+                    required
+                    type="text"
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    maxLength={12}
+                    onChange={(e) => {
+                      setAadhar(e.target.value);
                     }}
                   />
                 </div>
@@ -395,31 +434,6 @@ const RegisterationForm = () => {
                     </select>
                   </div>
                 )}
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="poomsaeType"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Event
-                  </label>
-
-                  <select
-                    required
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    name="poomsaeType"
-                    id="poomsaeType"
-                    onChange={(e) => {
-                      setEvent(e.target.value);
-                    }}
-                  >
-                    {events.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
                 {event === "KYORUGI" && (
                   <div className="col-span-6 sm:col-span-3">
