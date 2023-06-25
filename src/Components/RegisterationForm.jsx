@@ -63,7 +63,7 @@ const RegisterationForm = () => {
 
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
-  const [event, setEvent] = useState("");
+  const [event, setEvent] = useState("KYORUGI");
 
   const handleFirstNameChange = (event) => {
     const value = event.target.value;
@@ -129,30 +129,37 @@ const RegisterationForm = () => {
     }
   };
 
-  const [district, setDistrict] = useState("");
+  const [district, setDistrict] = useState("Ahmednagar");
 
   const [dob, setDOB] = useState("");
+
+  const [height, setHeight] = useState("");
 
   const submitForm = async (e) => {
     e.preventDefault();
     try {
       const jsonData = {
-        event: event || "KYORUGI",
+        event: event,
         district: district,
         student_name: `${firstName} ${lastName}`,
         gender: gender,
         dob: dob,
-        weight: weight,
+        // weight: weight,
+        // height: height,
         coach_name: coachName,
         current_belt: belt,
         tfi_id_no: tfiId,
         wtf_cr_no: wtfCr,
       };
+      if (jsonData.event === "KYORUGI") {
+        jsonData.weight = weight;
+        jsonData.height = height;
+      }
       const request = await httpClient.post("/", jsonData);
       showToast(request.data.msg, "success");
       document.getElementById("form").reset();
     } catch (error) {
-      showToast(error.response.data.msg);
+      showToast(error.response.data.error, "error");
     }
   };
 
@@ -173,7 +180,7 @@ const RegisterationForm = () => {
 
             <div className="hidden lg:relative lg:block lg:p-12">
               <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                Register for Kyurogi
+                Register for Event
               </h2>
 
               <p className="mt-4 leading-relaxed text-white/90">
@@ -186,7 +193,7 @@ const RegisterationForm = () => {
             <div className="max-w-xl lg:max-w-3xl">
               <div className="relative -mt-24 block lg:hidden">
                 <h1 className="mt-0 text-2xl font-bold text-gray-300 sm:text-3xl md:text-4xl">
-                  Register for Kyurogi
+                  Register for Event
                 </h1>
 
                 <p className="mt-0 leading-relaxed text-gray-200">
@@ -201,6 +208,29 @@ const RegisterationForm = () => {
                 className="mt-8 grid grid-cols-6 gap-6"
                 id="form"
               >
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="district"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    District
+                  </label>
+
+                  <select
+                    required
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    name="district"
+                    id="district"
+                    onChange={(e) => setDistrict(e.target.value)}
+                  >
+                    {districtsInMaharashtra.map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <br />
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="FirstName"
@@ -307,7 +337,7 @@ const RegisterationForm = () => {
                   <br />
                 </div>
 
-                {gender === "MALE" && (
+                {gender === "MALE" && event === "KYORUGI" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
                       htmlFor="heightCategory"
@@ -321,6 +351,7 @@ const RegisterationForm = () => {
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                       name="height"
                       id="height"
+                      onChange={(e) => setHeight(e.target.value)}
                     >
                       <option value="Under 148 cms">Under 148 cms</option>
                       <option value="Under 152 cms">Under 152 cms</option>
@@ -335,7 +366,7 @@ const RegisterationForm = () => {
                   </div>
                 )}
 
-                {gender === "FEMALE" && (
+                {gender === "FEMALE" && event === "KYORUGI" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
                       htmlFor="heightCategory"
@@ -349,6 +380,7 @@ const RegisterationForm = () => {
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                       name="heights"
                       id="heights"
+                      onChange={(e) => setHeight(e.target.value)}
                     >
                       <option value="Under 144 cms">Under 144 cms</option>
                       <option value="Under 148 cms">Under 148 cms</option>
@@ -389,30 +421,32 @@ const RegisterationForm = () => {
                   </select>
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="Weight"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Weight
-                  </label>
+                {event === "KYORUGI" && (
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="Weight"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Weight
+                    </label>
 
-                  <input
-                    required
-                    min="1"
-                    type="number"
-                    id="Weight"
-                    name="Weight"
-                    value={weight}
-                    onChange={handleWeightChange}
-                    className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
-                      weightError ? "border-red-500" : ""
-                    }`}
-                  />
-                  {weightError && (
-                    <p className="text-red-500 text-sm mt-1">{weightError}</p>
-                  )}
-                </div>
+                    <input
+                      required
+                      min="1"
+                      type="number"
+                      id="Weight"
+                      name="Weight"
+                      value={weight}
+                      onChange={handleWeightChange}
+                      className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
+                        weightError ? "border-red-500" : ""
+                      }`}
+                    />
+                    {weightError && (
+                      <p className="text-red-500 text-sm mt-1">{weightError}</p>
+                    )}
+                  </div>
+                )}
 
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -438,29 +472,6 @@ const RegisterationForm = () => {
                       {coachNameError}
                     </p>
                   )}
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="district"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    District
-                  </label>
-
-                  <select
-                    required
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    name="district"
-                    id="district"
-                    onChange={(e) => setDistrict(e.target.value)}
-                  >
-                    {districtsInMaharashtra.map((district) => (
-                      <option key={district} value={district}>
-                        {district}
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 {/* Make it a dropdown */}
