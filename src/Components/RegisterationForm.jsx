@@ -173,9 +173,8 @@ const RegisterationForm = () => {
             <div className="absolute inset-0">
               <img
                 alt="Register"
-                src={require("../banner.jpeg")}
-                width={"50%"}
-                height={"50%"}
+                src={require("../tam.jpeg")}
+                style={{ objectFit: "contain" }}
                 className="h-full w-full object-cover opacity-80"
               />
             </div>
