@@ -448,6 +448,7 @@ const RegisterationForm = () => {
                       <option value="Under 168 cms">Under 168 cms</option>
                       <option value="Under 172 cms">Under 172 cms</option>
                       <option value="Under 176 cms">Under 176 cms</option>
+                      <option value="Under 180 cms">Under 180 cms</option>
                       <option value="Over 180 cms">Over 180 cms</option>
                     </select>
                   </div>
