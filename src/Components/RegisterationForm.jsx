@@ -65,6 +65,8 @@ const RegisterationForm = () => {
   const [firstNameError, setFirstNameError] = useState("");
   const [event, setEvent] = useState("KYORUGI");
   const [aadhar, setAadhar] = useState("");
+  const [middlename, setMiddlename] = useState("");
+  const [middleNameError, setMiddleNameError] = useState("");
 
   const handleFirstNameChange = (event) => {
     const value = event.target.value;
@@ -74,6 +76,17 @@ const RegisterationForm = () => {
       setFirstNameError("First name is required");
     } else {
       setFirstNameError("");
+    }
+  };
+
+  const handleMiddleNameChange = (event) => {
+    const value = event.target.value;
+    setMiddlename(value);
+
+    if (!value.trim()) {
+      setMiddleNameError("First name is required");
+    } else {
+      setMiddleNameError("");
     }
   };
 
@@ -109,7 +122,7 @@ const RegisterationForm = () => {
   const [coachNameError, setCoachNameError] = useState("");
   const [belt, setBelt] = useState("");
   const [tfiId, setTfiId] = useState("");
-  const [wtfCr, setWtfCr] = useState("");
+  const [danCr, setDanCr] = useState("");
 
   const events = [
     "KYORUGI",
@@ -142,7 +155,7 @@ const RegisterationForm = () => {
       const jsonData = {
         event: event,
         district: district,
-        student_name: `${firstName} ${lastName}`,
+        student_name: `${firstName} ${middlename} ${lastName}`,
         gender: gender,
         dob: dob,
         aadhar: aadhar,
@@ -151,7 +164,7 @@ const RegisterationForm = () => {
         coach_name: coachName,
         current_belt: belt,
         tfi_id_no: tfiId || "N/A",
-        wtf_cr_no: wtfCr || "N/A",
+        dan_cr_no: danCr || "N/A",
       };
       if (jsonData.event === "KYORUGI") {
         jsonData.weight = weight;
@@ -160,6 +173,15 @@ const RegisterationForm = () => {
       const request = await httpClient.post("/", jsonData);
       showToast(request.data.msg, "success");
       document.getElementById("form").reset();
+      setFirstName("");
+      setMiddlename("");
+      setLastName("");
+      setAadhar("");
+      setBelt("");
+      setCoachName("");
+      setGender("");
+      setHeight("");
+      setWeight("");
     } catch (error) {
       showToast(error.response.data.error, "error");
     }
@@ -283,6 +305,32 @@ const RegisterationForm = () => {
 
                 <div className="col-span-6 sm:col-span-3">
                   <label
+                    htmlFor="MiddleName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Middle Name
+                  </label>
+
+                  <input
+                    required
+                    type="text"
+                    id="MiddleName"
+                    name="middle_name"
+                    value={middlename}
+                    onChange={handleMiddleNameChange}
+                    className={`p-1 mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
+                      middleNameError ? "border-red-500" : ""
+                    }`}
+                  />
+                  {middleNameError && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {middleNameError}
+                    </p>
+                  )}
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
                     htmlFor="LastName"
                     className="block text-sm font-medium text-gray-700"
                   >
@@ -328,7 +376,7 @@ const RegisterationForm = () => {
 
                 <div className="col-span-6">
                   <label
-                    htmlFor="dateOfBirth"
+                    htmlFor="aadhar"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Aadhar number
@@ -337,6 +385,7 @@ const RegisterationForm = () => {
                   <input
                     required
                     type="text"
+                    id="aadhar"
                     className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                     maxLength={12}
                     onChange={(e) => {
@@ -531,23 +580,25 @@ const RegisterationForm = () => {
                   />
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="wtfCrNo"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Wtf Cr No
-                  </label>
+                {belt === "BLACK" && (
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="danCrNo"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      DAN Cr No
+                    </label>
 
-                  <input
-                    required
-                    type="text"
-                    id="wtfCrNo"
-                    name="wtfCrNo"
-                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    onChange={(e) => setWtfCr(e.target.value)}
-                  />
-                </div>
+                    <input
+                      required
+                      type="text"
+                      id="danCrNo"
+                      name="danCrNo"
+                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      onChange={(e) => setDanCr(e.target.value)}
+                    />
+                  </div>
+                )}
 
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                   <button
