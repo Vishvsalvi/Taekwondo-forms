@@ -61,6 +61,7 @@ const RegisterationForm = () => {
     setGender(event.target.value);
   };
 
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
@@ -167,6 +168,7 @@ const RegisterationForm = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const jsonData = {
         event: event,
         district: district,
@@ -188,6 +190,7 @@ const RegisterationForm = () => {
       }
       const request = await httpClient.post("/", jsonData);
       showToast(request.data.msg, "success");
+      setLoading(false);
       document.getElementById("form").reset();
       setFirstName("");
       setMiddlename("");
@@ -201,6 +204,7 @@ const RegisterationForm = () => {
       setWeight("");
     } catch (error) {
       showToast(error.response.data.error, "error");
+      setLoading(false);
     }
   };
 
@@ -648,6 +652,7 @@ const RegisterationForm = () => {
                   <button
                     type="button"
                     onClick={submitForm}
+                    disabled={loading}
                     className="inline-block shrink-0 rounded-md border border-gray-900 bg-gray-900 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-gray-900 focus:outline-none focus:ring active:text-gray-500"
                   >
                     Register
