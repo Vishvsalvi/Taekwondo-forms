@@ -62,7 +62,9 @@ const RegisterationForm = () => {
   };
 
   const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [event, setEvent] = useState("KYORUGI");
   const [aadhar, setAadhar] = useState("");
   const [middlename, setMiddlename] = useState("");
@@ -84,7 +86,7 @@ const RegisterationForm = () => {
     setMiddlename(value);
 
     if (!value.trim()) {
-      setMiddleNameError("First name is required");
+      setMiddleNameError("Middle name is required");
     } else {
       setMiddleNameError("");
     }
@@ -101,6 +103,17 @@ const RegisterationForm = () => {
       setLastNameError("Last name is required");
     } else {
       setLastNameError("");
+    }
+  };
+
+  const handleEmailChange = (event) => {
+    const value = event.target.value;
+    setEmail(value);
+
+    if (!value.trim()) {
+      setEmailError("Email is required");
+    } else {
+      setEmailError("");
     }
   };
 
@@ -129,7 +142,9 @@ const RegisterationForm = () => {
     "INDIVIDUAL POOMSAE",
     "PAIR POOMSAE",
     "TEAM POOMSAE",
-    "FREE STYLE POOMSAE",
+    "FREESTYLE INDIVIDUAL POOMSAE",
+    "FREESTYLE PAIR POOMSAE",
+    "FREESTYLE TEAM POOMSAE",
   ];
 
   const handleCoachNameChange = (event) => {
@@ -159,6 +174,7 @@ const RegisterationForm = () => {
         gender: gender,
         dob: dob,
         aadhar: aadhar,
+        email: email,
         // weight: weight,
         // height: height,
         coach_name: coachName,
@@ -177,6 +193,7 @@ const RegisterationForm = () => {
       setMiddlename("");
       setLastName("");
       setAadhar("");
+      setEmail("");
       setBelt("");
       setCoachName("");
       setGender("");
@@ -353,6 +370,30 @@ const RegisterationForm = () => {
                   )}
                 </div>
 
+                 <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="LastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
+                  </label>
+
+                  <input
+                    required
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    className={`p-1 mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
+                      emailError ? "border-red-500" : ""
+                    }`}
+                  />
+                  {emailError && (
+                    <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                  )}
+                </div>
+
                 <div className="col-span-6">
                   <label
                     htmlFor="dateOfBirth"
@@ -404,6 +445,7 @@ const RegisterationForm = () => {
                     id="Male"
                     name="gender"
                     value="MALE"
+                    checked={gender === "MALE"}
                     onChange={handleGenderChange}
                   />
                   <label className="text-sm text-gray-700" htmlFor="Male">
@@ -416,6 +458,7 @@ const RegisterationForm = () => {
                     id="Female"
                     name="gender"
                     value="FEMALE"
+                    checked={gender === "FEMALE"}
                     onChange={handleGenderChange}
                   />
                   <label className="text-sm text-gray-700" htmlFor="Female">
