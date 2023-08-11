@@ -162,7 +162,7 @@ const RegisterationForm = () => {
 
   const [dob, setDOB] = useState("");
 
-  const [height, setHeight] = useState("");
+  const [height, setHeight] = useState("Under 148 cms");
 
   const submitForm = async (e) => {
     e.preventDefault();
