@@ -70,6 +70,7 @@ const RegisterationForm = () => {
   const [aadhar, setAadhar] = useState("");
   const [middlename, setMiddlename] = useState("");
   const [middleNameError, setMiddleNameError] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleFirstNameChange = (event) => {
     const value = event.target.value;
@@ -119,6 +120,7 @@ const RegisterationForm = () => {
   };
 
   const [weight, setWeight] = useState("");
+  const [weightCategory, setWeightCategory] = useState("");
   const [weightError, setWeightError] = useState("");
 
   const handleWeightChange = (event) => {
@@ -163,8 +165,6 @@ const RegisterationForm = () => {
 
   const [dob, setDOB] = useState("");
 
-  const [height, setHeight] = useState("Under 148 cms");
-
   const submitForm = async (e) => {
     e.preventDefault();
     try {
@@ -177,6 +177,7 @@ const RegisterationForm = () => {
         dob: dob,
         aadhar: aadhar,
         email: email,
+        address: address,
         // weight: weight,
         // height: height,
         coach_name: coachName,
@@ -186,7 +187,7 @@ const RegisterationForm = () => {
       };
       if (jsonData.event === "KYORUGI") {
         jsonData.weight = weight;
-        jsonData.height = height;
+        jsonData.category = weightCategory;
       }
       const request = await httpClient.post("/", jsonData);
       showToast(request.data.msg, "success");
@@ -200,8 +201,8 @@ const RegisterationForm = () => {
       setBelt("");
       setCoachName("");
       setGender("");
-      setHeight("");
       setWeight("");
+      setAddress("");
     } catch (error) {
       showToast(error.response.data.error, "error");
       setLoading(false);
@@ -216,20 +217,10 @@ const RegisterationForm = () => {
             <div className="absolute inset-0">
               <img
                 alt="Register"
-                src={require("../tam.jpeg")}
+                src={require("../banner.jpeg")}
                 style={{ objectFit: "contain" }}
                 className="h-full w-full object-cover opacity-80"
               />
-            </div>
-
-            <div className="hidden lg:relative lg:block lg:p-12">
-              <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                Register for Event
-              </h2>
-
-              <p className="mt-4 leading-relaxed text-white/90">
-                Enter your details correctly to register for the competition.
-              </p>
             </div>
           </section>
 
@@ -419,6 +410,19 @@ const RegisterationForm = () => {
                   />
                 </div>
 
+                   <div className="col-span-6">
+                  <label
+                    htmlFor="dateOfBirth"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Address
+                  </label>
+                  <textarea 
+                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  onChange={(e) => {setAddress(e.target.value)}}
+                  ></textarea>
+                </div>
+
                 <div className="col-span-6">
                   <label
                     htmlFor="aadhar"
@@ -471,66 +475,6 @@ const RegisterationForm = () => {
                   <br />
                 </div>
 
-                {gender === "MALE" && event === "KYORUGI" && (
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="heightCategory"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Height Category
-                    </label>
-
-                    <select
-                      required
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                      name="height"
-                      id="height"
-                      onChange={(e) => setHeight(e.target.value)}
-                    >
-                      <option value="Under 148 cms">Under 148 cms</option>
-                      <option value="Under 152 cms">Under 152 cms</option>
-                      <option value="Under 156 cms">Under 156 cms</option>
-                      <option value="Under 160 cms">Under 160 cms</option>
-                      <option value="Under 164 cms">Under 164 cms</option>
-                      <option value="Under 168 cms">Under 168 cms</option>
-                      <option value="Under 172 cms">Under 172 cms</option>
-                      <option value="Under 176 cms">Under 176 cms</option>
-                      <option value="Under 180 cms">Under 180 cms</option>
-                      <option value="Over 180 cms">Over 180 cms</option>
-                    </select>
-                  </div>
-                )}
-
-                {gender === "FEMALE" && event === "KYORUGI" && (
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="heightCategory"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Height Category
-                    </label>
-
-                    <select
-                      required
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                      name="heights"
-                      id="heights"
-                      onChange={(e) => setHeight(e.target.value)}
-                    >
-                      <option value="Under 144 cms">Under 144 cms</option>
-                      <option value="Under 148 cms">Under 148 cms</option>
-                      <option value="Under 152 cms">Under 152 cms</option>
-                      <option value="Under 156 cms">Under 156 cms</option>
-                      <option value="Under 160 cms">Under 160 cms</option>
-                      <option value="Under 164 cms">Under 164 cms</option>
-                      <option value="Under 168 cms">Under 168 cms</option>
-                      <option value="Under 172 cms">Under 172 cms</option>
-                      <option value="Under 176 cms">Under 176 cms</option>
-                      <option value="Over 176 cms">Over 176 cms</option>
-                    </select>
-                  </div>
-                )}
-
                 {event === "KYORUGI" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -555,6 +499,28 @@ const RegisterationForm = () => {
                     {weightError && (
                       <p className="text-red-500 text-sm mt-1">{weightError}</p>
                     )}
+                  </div>
+                )}
+
+                {event === "KYORUGI" && (
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="Weight"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Weight Category
+                    </label>
+
+                    <input
+                      required
+                      min="1"
+                      type="text"
+                      id="WeightCategory"
+                      name="Weight"
+                      value={weightCategory}
+                      onChange={(e) => setWeightCategory(e.target.value )}
+                      className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm`}
+                    />
                   </div>
                 )}
 
