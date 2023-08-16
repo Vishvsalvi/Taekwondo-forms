@@ -492,20 +492,15 @@ const RegisterationForm = () => {
                       name="Weight"
                       value={weight}
                       onChange={handleWeightChange}
-                      className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
-                        weightError ? "border-red-500" : ""
-                      }`}
+                      className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm`}
                     />
-                    {weightError && (
-                      <p className="text-red-500 text-sm mt-1">{weightError}</p>
-                    )}
                   </div>
                 )}
 
                 {event === "KYORUGI" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="Weight"
+                      htmlFor="WeightCategory"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Weight Category
@@ -516,7 +511,7 @@ const RegisterationForm = () => {
                       min="1"
                       type="text"
                       id="WeightCategory"
-                      name="Weight"
+                      name="WeightCategory"
                       value={weightCategory}
                       onChange={(e) => setWeightCategory(e.target.value )}
                       className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm`}
