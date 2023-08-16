@@ -171,25 +171,26 @@ const RegisterationForm = () => {
       setLoading(true);
       const jsonData = {
         event: event,
-        district: district,
+        district: district || "N/A",
         student_name: `${firstName} ${middlename} ${lastName}`,
-        gender: gender,
+        gender: gender || "N/A",
         dob: dob,
-        aadhar: aadhar,
+        aadhar: aadhar || null,
         email: email,
         address: address,
         // weight: weight,
         // height: height,
-        coach_name: coachName,
-        current_belt: belt,
+        coach_name: coachName || "N/A",
+        current_belt: belt || "N/A",
         tfi_id_no: tfiId || "N/A",
         dan_cr_no: danCr || "N/A",
       };
       if (jsonData.event === "KYORUGI") {
-        jsonData.weight = weight;
-        jsonData.category = weightCategory;
+        jsonData.weight = weight || null;
+        jsonData.category = weightCategory || null;
       }
       const request = await httpClient.post("/", jsonData);
+      if(request?.data?.msg){
       showToast(request.data.msg, "success");
       setLoading(false);
       document.getElementById("form").reset();
@@ -203,6 +204,11 @@ const RegisterationForm = () => {
       setGender("");
       setWeight("");
       setAddress("");
+      }else {
+        showToast(request.data?.error || "Something went wrong please try again.");
+        setLoading(false);
+      }
+      console.log(request.data)
     } catch (error) {
       showToast(error.response.data.error, "error");
       setLoading(false);
